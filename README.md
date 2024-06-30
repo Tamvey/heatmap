@@ -16,7 +16,16 @@ cmake --build .
 > [!NOTE]
 > If no property file specified used default properties.
 > 
-> Coords of loaded areas are written to `regions.txt` file.
+> Loaded areas coords are written to `regions.txt` file.
+
+## Control
+Application controlled by keyboard events:
+
+`h` - display current heatmap
+
+`m` - display median frame
+
+`esc` - exit
 
 ## Property file
 `frames_for_median` - amount of frames used to find median frame
