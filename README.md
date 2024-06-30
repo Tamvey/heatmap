@@ -1,4 +1,7 @@
 # Heatmap
+
+![heatmap](https://github.com/Tamvey/heatmap/assets/112703217/3a720ae1-c20d-4a1c-a0ec-5a4732bb4d45)
+
 ## Build 
 ```
 cmake -S heatmap -B build -DOpenCV_DIR=<path_to_opencv_cmake_config>
@@ -32,15 +35,15 @@ Application controlled by keyboard events:
 
 `min_contour_area` - minimal area of moving object to be detected
 
-`usr_cols` - amount of user's net columns
+`usr_cols` - amount of user's grid columns
 
-`usr_rows` - amount of user's net rows
+`usr_rows` - amount of user's grid rows
 
 `gradient_colors` - amount of colors from blue to red
 
-`color_threshold` - number of first color detecting high workload
+`color_threshold` - number of the coldest color detecting high workload
 
-`min_area` - percentage of net square area covered with warm color to be defined as highly worloaded
+`min_area` - percentage of grid cell covered with warm color to be defined as high loaded
 
 > [!IMPORTANT]
 > Example of property file structure [props.txt](https://github.com/Tamvey/heatmap/blob/main/props.txt).
