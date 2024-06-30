@@ -9,7 +9,7 @@ cmake --build .
 ```
 <heatmap_executable> <arg[1]> <arg[2]>
 ```
-`<arg[1]>` - filepath to video file
+`<arg[1]>` - path to video file
 
 `<arg[2]>` - path to property file
 
