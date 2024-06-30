@@ -1,0 +1,7 @@
+frames_for_median=200
+min_contour_area=100
+usr_cols=20
+usr_rows=10
+gradient_colors=12
+color_threshold=9
+min_area=30
