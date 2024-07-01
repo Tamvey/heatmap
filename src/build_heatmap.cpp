@@ -7,11 +7,10 @@
 #include <vector>
 #include <algorithm>
 
-#define M2D vector<vector<int>>
-#define vi vector<int>
-
 using namespace cv;
 using namespace std;
+using M2D = vector<vector<int>>;
+using vi = vector<int>;
 
 void file_print(vi arr, int n, string filename)
 {
@@ -65,7 +64,7 @@ vi count_states(M2D& arr)
 }
 
 
-int computeMedian(vector<int> elements)
+int compute_median_one_channel(vector<int> elements)
 {
   nth_element(elements.begin(), elements.begin()+elements.size()/2, elements.end());
 
@@ -96,9 +95,9 @@ Mat compute_median(vector<Mat> vec)
         elements_R.push_back(R);
       }
 
-      medianImg.at<Vec3b>(row, col)[0] = computeMedian(elements_B);
-      medianImg.at<Vec3b>(row, col)[1] = computeMedian(elements_G);
-      medianImg.at<Vec3b>(row, col)[2] = computeMedian(elements_R);
+      medianImg.at<Vec3b>(row, col)[0] = compute_median_one_channel(elements_B);
+      medianImg.at<Vec3b>(row, col)[1] = compute_median_one_channel(elements_G);
+      medianImg.at<Vec3b>(row, col)[2] = compute_median_one_channel(elements_R);
     }
   }
   return medianImg;
@@ -147,7 +146,7 @@ vector<pair<int, int>> check_areas(Mat &mat, int y, int x, int y_p, int x_p,
 int draw_heatmap(string path, int frames_for_median, int min_contour_area, int usr_cols,
                  int usr_rows, int gradient_colors, int color_threshold, float min_area )
 {
-    // Clear file with high workload
+    // Clear file with coords of regions
     string regions_file = "regions.txt";
     ofstream ofs;
     ofs.open(regions_file, ofstream::out | ofstream::trunc);
@@ -155,6 +154,8 @@ int draw_heatmap(string path, int frames_for_median, int min_contour_area, int u
 
     // Create a VideoCapture object and open the input file
     VideoCapture cap(path);
+    // CAP_MODE_BGR = 0
+    cap.set(CAP_PROP_MODE, 0);
     vector<Mat> frames;
     if(!cap.isOpened())
     {
@@ -180,11 +181,13 @@ int draw_heatmap(string path, int frames_for_median, int min_contour_area, int u
     M2D colors = gradient(gradient_colors);
 
     //  Reset frame number to 0
-    cap.set(CAP_PROP_POS_FRAMES, 0);
+    cap.release();
+    cap.open(path);
+    cap.set(CAP_PROP_MODE, 0);
 
     // Convert background to grayscale
-    Mat grayMedianFrame;
-    cvtColor(median_frame, grayMedianFrame, COLOR_BGR2GRAY);
+    Mat gray_median_frame;
+    cvtColor(median_frame, gray_median_frame, COLOR_BGR2GRAY);
 
     // Loop over all frames
     Mat frame;
@@ -204,7 +207,7 @@ int draw_heatmap(string path, int frames_for_median, int min_contour_area, int u
 
         // Calculate absolute difference of current frame and the median frame
         Mat dframe;
-        absdiff(gframe, grayMedianFrame, dframe);
+        absdiff(gframe, gray_median_frame, dframe);
 
         // Threshold to binarize
         threshold(dframe, dframe, 30, 255, THRESH_BINARY);
@@ -244,7 +247,7 @@ int draw_heatmap(string path, int frames_for_median, int min_contour_area, int u
             for (auto coord : areas)
             {
                 rectangle(frame, {coord.second, coord.first},
-                     {coord.second + x_p, coord.first + y_p}, {0, 0, 255}, 1);
+                         {coord.second + x_p, coord.first + y_p}, {0, 0, 255}, 1);
             }
         }
 
