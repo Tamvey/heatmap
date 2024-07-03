@@ -45,6 +45,6 @@ Application controlled by keyboard events:
 
 `min_area` - percentage of grid cell covered with warm color to be defined as high loaded
 
-> [!IMPORTANT]
+> [!NOTE]
 > Example of property file structure [props.txt](https://github.com/Tamvey/heatmap/blob/main/props.txt).
 
